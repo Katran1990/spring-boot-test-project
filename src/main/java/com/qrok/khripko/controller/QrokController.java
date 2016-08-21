@@ -22,7 +22,7 @@ public class QrokController {
         return dao.get();
     }
 
-    @GetMapping("/objects/{id}")
+    @GetMapping("/object/{id}")
     public ModelEntity getModel(@PathVariable Integer id){
         return dao.getById(id);
     }
@@ -43,4 +43,5 @@ public class QrokController {
     public void delete(@PathVariable Integer id){
         dao.delete(id);
     }
+
 }

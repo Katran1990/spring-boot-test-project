@@ -50,7 +50,6 @@ public class ModelEntityDaoImpl implements ModelEntityDao {
     public void update(ModelEntity newModel, Integer id) {
         Session session = sessionFactory.getCurrentSession();
         session.merge(newModel);
-        session.close();
     }
 
     @Override

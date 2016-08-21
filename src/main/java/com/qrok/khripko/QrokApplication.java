@@ -7,19 +7,16 @@ package com.qrok.khripko;
 import com.qrok.khripko.model.ModelEntity;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBuilder;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 
 @Configuration
-@EnableTransactionManagement
 @SpringBootApplication
 public class QrokApplication {
 
@@ -33,7 +30,6 @@ public class QrokApplication {
         return dataSource;
     }
 
-    @Autowired
     @Bean(name = "sessionFactory")
     public SessionFactory getSessionFactory(DataSource dataSource) {
 
@@ -46,7 +42,6 @@ public class QrokApplication {
         return sessionBuilder.buildSessionFactory();
     }
 
-    @Autowired
     @Bean(name = "transactionManager")
     public HibernateTransactionManager getTransactionManager(
             SessionFactory sessionFactory) {
@@ -55,8 +50,6 @@ public class QrokApplication {
 
         return transactionManager;
     }
-
-
 
     public static void main(String[] args) throws Exception {
         SpringApplication.run(QrokApplication.class, args);
