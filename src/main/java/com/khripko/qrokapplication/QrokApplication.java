@@ -1,12 +1,13 @@
-package com.qrok.khripko;
+package com.khripko.qrokapplication;
 
 /**
  * Created by Boris on 19.08.2016.
  */
 
-import com.qrok.khripko.model.ModelEntity;
+import com.khripko.qrokapplication.model.DataObject;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -20,13 +21,18 @@ import javax.sql.DataSource;
 @SpringBootApplication
 public class QrokApplication {
 
+    private @Value("${spring.datasource.driver-class-name}") String driver;
+    private @Value("${spring.datasource.url}") String url;
+    private @Value("${spring.datasource.data-username}") String username;
+    private @Value("${spring.datasource.data-password}") String password;
+
     @Bean(name = "dataSource")
     public DataSource getDataSource() {
         BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/qrok_test_project?autoReconnect=true&useSSL=false&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC");
-        dataSource.setUsername("root");
-        dataSource.setPassword("root");
+        dataSource.setDriverClassName(driver);
+        dataSource.setUrl(url);
+        dataSource.setUsername(username);
+        dataSource.setPassword(password);
         return dataSource;
     }
 
@@ -35,7 +41,7 @@ public class QrokApplication {
 
         LocalSessionFactoryBuilder sessionBuilder = new LocalSessionFactoryBuilder(dataSource);
 
-        sessionBuilder.addAnnotatedClasses(ModelEntity.class);
+        sessionBuilder.addAnnotatedClasses(DataObject.class);
         sessionBuilder.setProperty("hibernate.show_sql", "true");
         sessionBuilder.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
         sessionBuilder.setProperty("hibernate.hbm2ddl.auto", "auto");

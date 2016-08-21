@@ -1,61 +1,60 @@
-package com.qrok.khripko.dao;
+package com.khripko.qrokapplication.dao;
 
-import com.qrok.khripko.model.ModelEntity;
+import com.khripko.qrokapplication.model.DataObject;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Created by Boris on 19.08.2016.
  */
 @Repository(value = "dao")
-public class ModelEntityDaoImpl implements ModelEntityDao {
+public class DataObjectDaoImpl implements DataObjectDao {
 
     @Autowired
     SessionFactory sessionFactory;
 
-    public ModelEntityDaoImpl() {
+    public DataObjectDaoImpl() {
     }
 
-    public ModelEntityDaoImpl(SessionFactory sessionFactory){
+    public DataObjectDaoImpl(SessionFactory sessionFactory){
         this.sessionFactory = sessionFactory;
     }
 
     @Override
     @Transactional
-    public ModelEntity getById(Integer id) {
-        return (ModelEntity) sessionFactory.getCurrentSession().get(ModelEntity.class, id);
+    public DataObject getById(Integer id) {
+        return (DataObject) sessionFactory.getCurrentSession().get(DataObject.class, id);
     }
 
     @Override
     @Transactional
-    public List<ModelEntity> get() {
+    public List<DataObject> get() {
         Session session = sessionFactory.getCurrentSession();
-        return session.createCriteria(ModelEntity.class).list();
+        ArrayList<DataObject> dataObjects = (ArrayList<DataObject>) session.createCriteria(DataObject.class).list();
+        if (dataObjects.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return dataObjects;
     }
 
     @Override
     @Transactional
-    public ModelEntity save(ModelEntity newModel) {
-        Integer id = (Integer) sessionFactory.getCurrentSession().save(newModel);
-        return (ModelEntity) sessionFactory.getCurrentSession().get(ModelEntity.class, id);
-    }
-
-    @Override
-    @Transactional
-    public void update(ModelEntity newModel, Integer id) {
+    public DataObject saveOrUpdate(DataObject newModel) {
         Session session = sessionFactory.getCurrentSession();
-        session.merge(newModel);
+        return (DataObject) session.merge(newModel);
     }
 
     @Override
     @Transactional
     public void delete(Integer id) {
-        ModelEntity modelToDelete = new ModelEntity();
+        DataObject modelToDelete = new DataObject();
         modelToDelete.setId(id);
         sessionFactory.getCurrentSession().delete(modelToDelete);
     }

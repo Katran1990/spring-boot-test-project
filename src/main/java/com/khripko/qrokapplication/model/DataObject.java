@@ -1,4 +1,4 @@
-package com.qrok.khripko.model;
+package com.khripko.qrokapplication.model;
 
 import javax.persistence.*;
 
@@ -7,15 +7,15 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "model_data")
-public class ModelEntity {
+public class DataObject {
     private Integer id;
     private String title;
     private Long value;
 
-    public ModelEntity() {
+    public DataObject() {
     }
 
-    public ModelEntity(Integer id, String title, Long value) {
+    public DataObject(Integer id, String title, Long value) {
         this.id = id;
         this.title = title;
         this.value = value;
