@@ -1,4 +1,4 @@
-package com.khripko.qrokapplication;
+package com.khripko.qrokapplication.test;
 
 import com.google.gson.Gson;
 import com.khripko.qrokapplication.dao.DataObjectDao;
