@@ -4,16 +4,13 @@ import com.khripko.qrokapplication.model.DataObject;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate4.HibernateOptimisticLockingFailureException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-/**
- * Created by Boris on 19.08.2016.
- */
 @Repository(value = "dao")
 public class DataObjectDaoImpl implements DataObjectDao {
 
@@ -23,7 +20,7 @@ public class DataObjectDaoImpl implements DataObjectDao {
     public DataObjectDaoImpl() {
     }
 
-    public DataObjectDaoImpl(SessionFactory sessionFactory){
+    public DataObjectDaoImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
@@ -35,27 +32,28 @@ public class DataObjectDaoImpl implements DataObjectDao {
 
     @Override
     @Transactional
-    public List<DataObject> get() {
+    public List<DataObject> getAll() {
         Session session = sessionFactory.getCurrentSession();
         ArrayList<DataObject> dataObjects = (ArrayList<DataObject>) session.createCriteria(DataObject.class).list();
-        if (dataObjects.isEmpty()) {
-            return Collections.emptyList();
-        }
         return dataObjects;
     }
 
     @Override
     @Transactional
-    public DataObject saveOrUpdate(DataObject newModel) {
+    public DataObject saveOrUpdate(DataObject newDataObject) {
         Session session = sessionFactory.getCurrentSession();
-        return (DataObject) session.merge(newModel);
+        return (DataObject) session.merge(newDataObject);
     }
 
     @Override
     @Transactional
     public void delete(Integer id) {
-        DataObject modelToDelete = new DataObject();
-        modelToDelete.setId(id);
-        sessionFactory.getCurrentSession().delete(modelToDelete);
+        DataObject dataObjectToDelete = new DataObject();
+        dataObjectToDelete.setId(id);
+        try {
+            sessionFactory.getCurrentSession().delete(dataObjectToDelete);
+        } catch (HibernateOptimisticLockingFailureException e) {
+
+        }
     }
 }

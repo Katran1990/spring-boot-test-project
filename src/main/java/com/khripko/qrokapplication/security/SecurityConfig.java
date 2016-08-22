@@ -10,22 +10,27 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 
-/**
- * Created by Boris on 21.08.2016.
- */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private @Value("${spring.security.user.name}") String user;
-    private @Value("${spring.security.user.password}") String userPass;
-    private @Value("${spring.security.guest.name}") String guest;
-    private @Value("${spring.security.guest.password}") String guestPass;
-    private @Value("${spring.security.admin.name}") String admin;
-    private @Value("${spring.security.admin.password}") String adminPass;
+    @Value("${spring.security.user.name}")
+    private String user;
+    @Value("${spring.security.user.password}")
+    private String userPass;
+    @Value("${spring.security.guest.name}")
+    private String guest;
+    @Value("${spring.security.guest.password}")
+    private String guestPass;
+    @Value("${spring.security.admin.name}")
+    private String admin;
+    @Value("${spring.security.admin.password}")
+    private String adminPass;
+
     private static final String ADMIN = "ADMIN";
     private static final String USER = "USER";
     private static final String GUEST = "GUEST";
+    private static final String URL = "/api*//**";
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -35,15 +40,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().withUser(guest).password(guestPass).roles("GUEST")
                 .and().withUser(admin).password(adminPass).roles("ADMIN");
     }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/api*//**").hasAnyRole(ADMIN, USER, GUEST)
-                .antMatchers(HttpMethod.POST, "/api*//**").hasAnyRole(ADMIN, USER)
-                .antMatchers(HttpMethod.PUT, "/api*//**").hasAnyRole(ADMIN, USER)
-                .antMatchers(HttpMethod.DELETE, "/api*//**").hasRole(ADMIN)
+                .antMatchers(HttpMethod.GET, URL).hasAnyRole(ADMIN, USER, GUEST)
+                .antMatchers(HttpMethod.POST, URL).hasAnyRole(ADMIN, USER)
+                .antMatchers(HttpMethod.PUT, URL).hasAnyRole(ADMIN, USER)
+                .antMatchers(HttpMethod.DELETE, URL).hasRole(ADMIN)
                 .anyRequest().permitAll()
                 .and()
                 .httpBasic().and()

@@ -1,9 +1,5 @@
 package com.khripko.qrokapplication;
 
-/**
- * Created by Boris on 19.08.2016.
- */
-
 import com.khripko.qrokapplication.model.DataObject;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.hibernate.SessionFactory;
@@ -21,10 +17,14 @@ import javax.sql.DataSource;
 @SpringBootApplication
 public class QrokApplication {
 
-    private @Value("${spring.datasource.driver-class-name}") String driver;
-    private @Value("${spring.datasource.url}") String url;
-    private @Value("${spring.datasource.data-username}") String username;
-    private @Value("${spring.datasource.data-password}") String password;
+    @Value("${spring.datasource.driver-class-name}")
+    private String driver;
+    @Value("${spring.datasource.url}")
+    private String url;
+    @Value("${spring.datasource.data-username}")
+    private String username;
+    @Value("${spring.datasource.data-password}")
+    private String password;
 
     @Bean(name = "dataSource")
     public DataSource getDataSource() {

@@ -2,9 +2,6 @@ package com.khripko.qrokapplication.model;
 
 import javax.persistence.*;
 
-/**
- * Created by Boris on 19.08.2016.
- */
 @Entity
 @Table(name = "model_data")
 public class DataObject {
