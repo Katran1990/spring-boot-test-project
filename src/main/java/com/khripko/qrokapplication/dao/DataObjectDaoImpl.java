@@ -4,7 +4,6 @@ import com.khripko.qrokapplication.model.DataObject;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate4.HibernateOptimisticLockingFailureException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,10 +49,6 @@ public class DataObjectDaoImpl implements DataObjectDao {
     public void delete(Integer id) {
         DataObject dataObjectToDelete = new DataObject();
         dataObjectToDelete.setId(id);
-        try {
-            sessionFactory.getCurrentSession().delete(dataObjectToDelete);
-        } catch (HibernateOptimisticLockingFailureException e) {
-
-        }
+        sessionFactory.getCurrentSession().delete(dataObjectToDelete);
     }
 }
