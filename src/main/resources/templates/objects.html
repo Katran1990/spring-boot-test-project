@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head lang="en">
+    <thymeleaf th:replace="fragment_head :: head"/>
+    <title>objects</title>
+</head>
+<body>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div sec:authorize="hasRole('ROLE_ADMIN')" class="navbar-header">
+            <a class="navbar-brand" href="/admin/objects"><span style="color: #ffffff;">Admin panel</span></a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <form th:action="@{/logout}" method="POST">
+                        <button class="btn btn-link" type="submit" value="logout" style="color: #ffffff; padding: 15px">
+                            logout
+                        </button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container" style="width: 700px;">
+    <table class="table table-striped">
+        <tr th:each="data : ${dataList}">
+            <td style="width: 10%;" align="center" th:text="${data.id}"></td>
+            <td align="center" th:text="${data.title}"></td>
+            <td style="width: 40%;" align="center">
+                <div>
+                    <input class="btn btn-default btn-sm" type="button" value="Edit"
+                           th:onclick="'javascript:redirectToEditForm(\'' + ${data.id} + '\');'"/>
+                    <input class="btn btn-default btn-sm" type="button" value="Delete"
+                           th:onclick="'javascript:deleteObj(\'' + ${data.id} + '\');'"/>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <input style="float: right" class="btn btn-primary" type="button" value="New" th:onclick="'javascript:redirectToEditForm();'"/>
+</div>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    function deleteObj(id) {
+        var x = new XMLHttpRequest();
+        x.open("DELETE", "/api/object/" + id);
+        x.onreadystatechange = function () {
+            window.location.replace("/admin/objects");
+        }
+        x.send();
+    }
+
+    function redirectToEditForm(id) {
+        var url = "/admin/create-or-update/";
+        if (id !== undefined) {
+            url += id;
+        }
+        window.location.replace(url);
+    }
+    /*]]>*/
+</script>
+
+</body>
+</html>

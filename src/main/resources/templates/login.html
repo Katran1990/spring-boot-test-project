@@ -1,0 +1,28 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <thymeleaf th:replace="fragment_head :: head"/>
+    <title>login</title>
+</head>
+<body>
+<p th:if="${param.logout}">
+<div class="alert alert-success center-block" style="width: 300px; padding: 5px;" role="alert">
+    You have been logout
+</div>
+</p>
+<div class="container">
+    <form class="form-signin" th:action="@{/login}" method="POST">
+        <h2 class="form-signin-heading" align="center">Please sign in</h2>
+        <label for="inputUsername" class="sr-only">Username</label>
+        <input type="text" name="username" id="inputUsername" class="form-control" placeholder="Username"/>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password"/>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    </form>
+    <p th:if="${param.error}">
+    <div class="alert alert-danger center-block" style="width: 300px;  padding: 5px;" role="alert">
+        Bad Credentials
+    </div>
+    </p>
+</div>
+</body>
+</html>

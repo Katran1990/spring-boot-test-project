@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head lang="en">
+    <thymeleaf th:replace="fragment_head :: head"/>
+    <title>list</title>
+</head>
+<body>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div sec:authorize="hasRole('ROLE_ADMIN')"  class="navbar-header">
+            <a class="navbar-brand" href="/admin/objects"><span style="color: #ffffff;">Admin panel</span></a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><form th:action="@{/logout}" method="POST">
+                    <button class="btn btn-link" type="submit" value="logout" style="color: #ffffff; padding: 15px">logout</button>
+                </form></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <form class="form form-inline" onsubmit="createOrUpdateObject(); return false;">
+        <div th:switch="${data}" class="input-group">
+            <div th:case="null">
+                <input id="title" type="text" maxlength="45" class="form-control edit-input" placeholder="Title"/>
+                <input id="value" type="number" class="form-control edit-input" placeholder="Value"/>
+            </div>
+            <div th:case="*">
+                <input id="title" type="text" maxlength="45" class="form-control edit-input" th:value="${data.title}"/>
+                <input id="value" type="number" class="form-control edit-input" th:value="${data.value}"/>
+                <input id="id" type="hidden" th:value="${data.id}"/>
+            </div>
+        </div>
+        <input type="submit" class="btn btn-primary" value="Save"/>
+    </form>
+</div>
+<br/>
+<script th:inline="javascript">
+    function createOrUpdateObject(){
+        var x = new XMLHttpRequest()
+        var obj = new Object();
+        obj.title = document.getElementById("title").value;
+        obj.value  = document.getElementById("value").value;
+        var url = "/api/object/"
+        var idElement  = document.getElementById("id");
+        if(idElement !== null){
+            obj.id = idElement.value;
+            url += obj.id;
+        }
+        var jsonString= JSON.stringify(obj);
+        x.open("POST", url);
+        x.setRequestHeader('Content-Type', 'application/json');
+        x.onreadystatechange  = function (){
+            window.location.replace("/admin/objects");
+        }
+        x.send(jsonString);
+    }
+</script>
+</body>
+</html>

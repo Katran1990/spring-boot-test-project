@@ -44,7 +44,7 @@ public class QrokApplication {
         sessionBuilder.addAnnotatedClasses(DataObject.class);
         sessionBuilder.setProperty("hibernate.show_sql", "true");
         sessionBuilder.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
-        sessionBuilder.setProperty("hibernate.hbm2ddl.auto", "auto");
+        sessionBuilder.setProperty("hibernate.hbm2ddl.auto", "update");
         return sessionBuilder.buildSessionFactory();
     }
 
